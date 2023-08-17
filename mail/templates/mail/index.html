@@ -1,0 +1,17 @@
+{% extends 'mail/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 align="center">MailerLite - это удобный сервис почтовых рассылок</h2>
+    <div class="container-xxl bd-gutter mt-5">
+        <div class="col-md-12 mx-auto text-center">
+            <p class="lead mb-5">
+                С помощью нашего почтового сервиса вы сможете создавать невероятные письма,
+                привлекающие ваших потенциальных клиентов.
+                <br><br>Также вам доступна отправка писем по расписанию, вы можете смотреть статусы и логи работы.
+                <br><br><b>Давайте начнем?</b>
+            </p>
+            <a class="btn btn-outline-primary btn-lg" href="{% url 'mail:message_create' %}">Создать рассылку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
