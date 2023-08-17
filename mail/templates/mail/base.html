@@ -26,9 +26,9 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-white">Главная</a></li>
+                <li><a href="{% url 'mail:index' %}" class="nav-link px-2 text-white">Главная</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Рассылки</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Шаблоны рассылок</a></li>
+                <li><a href="{% url 'mail:message_list' %}" class="nav-link px-2 text-white">Сообщения</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Клиенты</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Логи</a></li>
             </ul>
