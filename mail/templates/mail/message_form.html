@@ -1,7 +1,13 @@
 {% extends 'mail/base.html' %}
 {% block content %}
 <br>
-<h2 align="center">Создать/редактировать сообщение</h2><br><br>
+<h2 align="center">
+    {% if object %}
+    Редактировать сообщение
+    {% else %}
+    Создать новое сообщение
+    {% endif %}
+</h2><br><br>
 <div class="col-md-10 mx-auto">
     <p>Начните сдесь вводить заголовок письма и текст:</p>
     <div class="row"><br>
