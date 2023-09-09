@@ -1,6 +1,6 @@
 from django import forms
 
-from mail.models import Mailing, Client
+from mail.models import Mailing, Client, Message
 
 
 class StyleFormMixin:
@@ -9,7 +9,8 @@ class StyleFormMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if field_name != "is_active":
+                field.widget.attrs['class'] = 'form-control'
 
 
 class MailingForm(StyleFormMixin, forms.ModelForm):
@@ -25,4 +26,12 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Client
+        fields = "__all__"
+
+
+class MessageForm(StyleFormMixin, forms.ModelForm):
+    """Класс для генерации формы рассылочного сообщения"""
+
+    class Meta:
+        model = Message
         fields = "__all__"

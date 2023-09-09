@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
-from mail.forms import MailingForm, ClientForm
+from mail.forms import MailingForm, ClientForm, MessageForm
 from mail.models import Client, Message, Mailing
 
 
@@ -35,8 +35,8 @@ class MessageCreateView(CreateView):
     """Контроллер для создания нового сообщения"""
 
     model = Message
-    fields = ('message_subject', 'message_text')
-    success_url = reverse_lazy('mail:message_list')
+    form_class = MessageForm
+    success_url = reverse_lazy('mail:messages_list')
 
 
 class MessageListView(ListView):
@@ -55,22 +55,15 @@ class MessageUpdateView(UpdateView):
     """Контроллер для редактирования сообщения"""
 
     model = Message
-    fields = ('message_subject', 'message_text')
-
-    def get_success_url(self):
-        """
-        Переопределение url-адреса для перенаправления
-        после успешного редактирования
-        """
-
-        return reverse('message:view', args=[self.object.pk])
+    form_class = MessageForm
+    success_url = reverse_lazy('mail:messages_list')
 
 
 class MessageDelete(DeleteView):
     """Контроллер для удаления сообщения"""
 
     model = Message
-    success_url = reverse_lazy('mail:message_list')
+    success_url = reverse_lazy('mail:messages_list')
 
 
 class MailingCreateView(CreateView):
@@ -78,4 +71,10 @@ class MailingCreateView(CreateView):
 
     model = Mailing
     form_class = MailingForm
-    success_url = reverse_lazy('mail:message_list')
+    success_url = reverse_lazy('mail:mailing_list')
+
+
+class MailingListView(ListView):
+    """Контроллер для списка рассылок"""
+
+    model = Mailing
