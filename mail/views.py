@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
-from mail.models import Client, Message
+from mail.forms import MailingForm
+from mail.models import Client, Message, Mailing
 
 
 class IndexView(TemplateView):
@@ -61,4 +62,12 @@ class MessageDelete(DeleteView):
     """Контроллер для удаления сообщения"""
 
     model = Message
+    success_url = reverse_lazy('mail:message_list')
+
+
+class MailingCreateView(CreateView):
+    """Контроллер для создания новой рассылки"""
+
+    model = Mailing
+    form_class = MailingForm
     success_url = reverse_lazy('mail:message_list')

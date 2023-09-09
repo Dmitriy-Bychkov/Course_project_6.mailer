@@ -28,8 +28,8 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{% url 'mail:index' %}" class="nav-link px-2 text-white">Главная</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Рассылки</a></li>
-                <li><a href="{% url 'mail:message_list' %}" class="nav-link px-2 text-white">Сообщения</a></li>
-                <li><a href="{% url 'mail:client_list' %}" class="nav-link px-2 text-white">Клиенты</a></li>
+                <li><a href="{% url 'mail:messages_list' %}" class="nav-link px-2 text-white">Сообщения</a></li>
+                <li><a href="{% url 'mail:clients_list' %}" class="nav-link px-2 text-white">Клиенты</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Логи</a></li>
             </ul>
 
@@ -50,7 +50,7 @@
         <div class="row">
             <div class="col-12 col-md">
                 MailerLite
-                <small class="d-block mb-3 text-muted">&copy; 2023</small>
+                <small class="d-block mb-3 text-muted">&copy; {% now 'Y' %}</small>
             </div>
             <div class="col-6 col-md">
                 <h5>Категории</h5>

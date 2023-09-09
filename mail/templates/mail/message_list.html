@@ -3,7 +3,7 @@
 <br>
 <h2 align="center">Список сообщений</h2><br><br>
 <div class="container">
-    <a class="btn btn-outline-primary" href="{% url 'mail:message_create' %}">Добавить новое сообщение</a>
+    <a class="btn btn-outline-primary" href="{% url 'mail:create_message' %}">Добавить новое сообщение</a>
 </div><br>
 {% for object in object_list %}
 <div class="container">
@@ -15,11 +15,11 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{% url 'mail:message_view' object.pk %}"
+                        <a href="{% url 'mail:view_message' object.pk %}"
                            class="btn btn-sm btn-outline-secondary">Посмотреть</a>
-                        <a href="{% url 'mail:message_edit' object.pk %}"
+                        <a href="{% url 'mail:edit_message' object.pk %}"
                            class="btn btn-sm btn-outline-secondary">Редактировать</a>
-                        <a href="{% url 'mail:message_delete' object.pk %}"
+                        <a href="{% url 'mail:delete_message' object.pk %}"
                            class="btn btn-sm btn-outline-danger">Удалить</a>
                     </div>
                 </div>

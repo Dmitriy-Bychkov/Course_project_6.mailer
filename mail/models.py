@@ -40,9 +40,9 @@ class Mailing(models.Model):
     """Модель рассылки"""
 
     FREQUENCY_CHOICE = (
-        ("day", "день"),
-        ("week", "неделя"),
-        ("month", "месяц"),
+        ("dayly", "ежедневно"),
+        ("weekly", "еженедельно"),
+        ("monthly", "ежемесячно"),
     )
 
     STATUS_CHOICE = (
@@ -53,7 +53,7 @@ class Mailing(models.Model):
 
     start_time = models.DateTimeField(verbose_name='старт рассылки')
     completion_time = models.DateTimeField(verbose_name='завершение рассылки')
-    frequency = models.CharField(max_length=30, choices=FREQUENCY_CHOICE, default='day',
+    frequency = models.CharField(max_length=30, choices=FREQUENCY_CHOICE, default='dayly',
                                  verbose_name='периодичность')
     status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='created', verbose_name='статус')
     message = models.ForeignKey(Message, verbose_name='сообщение', on_delete=models.CASCADE)
