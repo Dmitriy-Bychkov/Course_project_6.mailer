@@ -18,7 +18,7 @@ class IndexView(TemplateView):
 
 
 class ClientCreateView(CreateView):
-    """Контроллер для создания новой рассылки"""
+    """Контроллер для создания нового клиента - получателя рассылки"""
 
     model = Client
     form_class = ClientForm
@@ -26,9 +26,30 @@ class ClientCreateView(CreateView):
 
 
 class ClientListView(ListView):
-    """Контроллер для клиента"""
+    """Контроллер для просмотра списка клиентов"""
 
     model = Client
+
+
+class ClientDetailView(DetailView):
+    """Контроллер для детального просмотра клиента"""
+
+    model = Client
+
+
+class ClientUpdateView(UpdateView):
+    """Контроллер для редактирования клиента"""
+
+    model = Client
+    form_class = ClientForm
+    success_url = reverse_lazy('mail:clients_list')
+
+
+class ClientDelete(DeleteView):
+    """Контроллер для удаления клиента"""
+
+    model = Client
+    success_url = reverse_lazy('mail:clients_list')
 
 
 class MessageCreateView(CreateView):
@@ -46,7 +67,7 @@ class MessageListView(ListView):
 
 
 class MessageDetailView(DetailView):
-    """Контроллер для детального просмотра сообщений"""
+    """Контроллер для детального просмотра сообщения"""
 
     model = Message
 
@@ -75,6 +96,27 @@ class MailingCreateView(CreateView):
 
 
 class MailingListView(ListView):
-    """Контроллер для списка рассылок"""
+    """Контроллер для просмотра списка рассылок"""
 
     model = Mailing
+
+
+class MailingDetailView(DetailView):
+    """Контроллер для детального просмотра рассылки"""
+
+    model = Mailing
+
+
+class MailingUpdateView(UpdateView):
+    """Контроллер для редактирования рассылки"""
+
+    model = Mailing
+    form_class = MailingForm
+    success_url = reverse_lazy('mail:mailing_list')
+
+
+class MailingDelete(DeleteView):
+    """Контроллер для удаления рассылки"""
+
+    model = Mailing
+    success_url = reverse_lazy('mail:mailing_list')
