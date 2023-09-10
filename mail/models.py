@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 NULLABLE = {'null': True, 'blank': True}
 
@@ -60,14 +61,14 @@ class Mailing(models.Model):
     clients = models.ManyToManyField(Client, verbose_name='клиенты')
     is_active = models.BooleanField(default=True, verbose_name='статус активности')
 
-    # def get_status(self):
-    #     now = timezone.now()
-    #     if self.commence_time < now < self.completion_time:
-    #         self.status = "commenced"
-    #     elif now > self.completion_time:
-    #         self.status = "completed"
-    #     self.save()
-    #     return self.status
+    def get_status(self):
+        now = timezone.now()
+        if self.start_time < now < self.completion_time:
+            self.status = "started"
+        elif now > self.completion_time:
+            self.status = "completed"
+        self.save()
+        return self.status
 
     def __str__(self):
         return f'{self.message}: {self.frequency}'
