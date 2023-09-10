@@ -1,26 +1,47 @@
 {% extends 'mail/base.html' %}
 {% block content %}
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for object in object_list %}
-    <div class="col">
-        <div class="card h-100">
-            <div class="card-header">
-                <h3 class="my-0 font-weight-normal">{{ object.client_name }}</h3>
-            </div>
-            <div class="card-body d-flex flex-column">
-                <h4 class="card-title pricing-card-title">{{ object.client_email }} руб.</h4>
-                <ul class="list-unstyled mt-3 mb-4 text-start m-3 flex-grow-1">
-                    <li>test-test</li>
-                </ul>
-                <div class="d-flex flex-column">
-                    <a href="#">Подробнее</a><br>
-                    <button type="button" class="btn btn-primary">Купить</button>
+    <div>
+        <div class="row mt-2">
+            <div class="col m-2"><br>
+                <h2 align="center">Список всех клиентов</h2>
+                <br>
+                <div class="row mt-2">
+                    <div class="col m-2">
+                        <a class="btn btn-outline-primary" href="{% url 'mail:create_client' %}">Добавить нового
+                            клиента</a>
+                    </div>
                 </div>
+                <br>
+                <table class="table">
+                    <thead>
+                    <tr class="table-active">
+                        <th>Имя клиента</th>
+                        <th>Email клиента</th>
+                        <th>Комментарий</th>
+                        <th>Действия с клиентом</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in object_list %}
+                        <tr>
+                            <td>{{ object.client_name }}</td>
+                            <td>{{ object.client_email }}</td>
+                            <td>{{ object.comment }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{% url 'mail:view_client' object.pk %}"
+                                       class="btn btn-sm btn-outline-secondary">Посмотреть</a>
+                                    <a href="{% url 'mail:edit_client' object.pk %}"
+                                       class="btn btn-sm btn-outline-primary">Редактировать</a>
+                                    <a href="{% url 'mail:delete_client' object.pk %}"
+                                       class="btn btn-sm btn-outline-danger">Удалить</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    {% empty %}
-    <p>Нет товаров</p>
-    {% endfor %}
-</div>
 {% endblock %}
