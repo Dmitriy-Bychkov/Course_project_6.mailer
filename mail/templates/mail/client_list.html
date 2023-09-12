@@ -15,6 +15,7 @@
                 <table class="table">
                     <thead>
                     <tr class="table-active">
+                        <th>№</th>
                         <th>Имя клиента</th>
                         <th>Email клиента</th>
                         <th>Комментарий</th>
@@ -24,6 +25,7 @@
                     <tbody>
                     {% for object in object_list %}
                         <tr>
+                            <td>{{ forloop.counter }}</td>
                             <td>{{ object.client_name }}</td>
                             <td>{{ object.client_email }}</td>
                             <td>{{ object.comment }}</td>
