@@ -1,0 +1,82 @@
+[
+  {
+    "model": "mail.client",
+    "pk": 1,
+    "fields": {
+      "client_name": "Дмитрий",
+      "client_email": "582620@gmail.com",
+      "comment": "Лучший клиент"
+    }
+  },
+  {
+    "model": "mail.client",
+    "pk": 2,
+    "fields": {
+      "client_name": "Иван",
+      "client_email": "dmitriybychkovcom@yandex.ru",
+      "comment": "На мою почту"
+    }
+  },
+  {
+    "model": "mail.message",
+    "pk": 1,
+    "fields": {
+      "message_subject": "Поздравление с новым годом",
+      "message_text": "Сердечно поздравляем вас от коллектива нашей компании с этим великим праздником и желаем всего самого наилучшего в новом году!"
+    }
+  },
+  {
+    "model": "mail.message",
+    "pk": 3,
+    "fields": {
+      "message_subject": "Выпуск нового продукта",
+      "message_text": "Спешим сообщить, что в нашей компании вышел новый замечательный продукт."
+    }
+  },
+  {
+    "model": "mail.mailing",
+    "pk": 3,
+    "fields": {
+      "start_time": "2023-09-12T00:00:00Z",
+      "completion_time": "2023-09-12T00:00:00Z",
+      "frequency": "daily",
+      "status": "completed",
+      "message": 3,
+      "is_active": true,
+      "clients": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "mail.mailing",
+    "pk": 5,
+    "fields": {
+      "start_time": "2023-09-10T00:00:00Z",
+      "completion_time": "2023-09-12T00:00:00Z",
+      "frequency": "daily",
+      "status": "completed",
+      "message": 3,
+      "is_active": true,
+      "clients": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "mail.mailing",
+    "pk": 7,
+    "fields": {
+      "start_time": "2023-09-09T00:00:00Z",
+      "completion_time": "2023-09-10T00:00:00Z",
+      "frequency": "daily",
+      "status": "completed",
+      "message": 1,
+      "is_active": false,
+      "clients": [
+        2
+      ]
+    }
+  }
+]
