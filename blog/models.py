@@ -16,9 +16,6 @@ class Blog(models.Model):
     def __str__(self):
         return f'{self.title}, {self.description}, {self.views_count}'
 
-    def get_absolute_url(self):
-        return reverse('blog_view', args=[str(self.id)])
-
     class Meta:
         """Представление написания заголовков блога в админке"""
 
