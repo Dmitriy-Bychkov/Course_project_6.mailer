@@ -8,7 +8,7 @@ class Client(models.Model):
     """Модель для клиента сервиса рассылок"""
 
     client_name = models.CharField(max_length=30, verbose_name='имя')
-    client_email = models.EmailField(max_length=100, verbose_name='email')
+    client_email = models.EmailField(unique=True, verbose_name='email')
     comment = models.TextField(verbose_name='комментарий', **NULLABLE)
 
     def __str__(self):
