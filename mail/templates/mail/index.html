@@ -1,17 +1,30 @@
 {% extends 'mail/base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <h2 align="center">MailerLite - это удобный сервис почтовых рассылок</h2>
-    <div class="container-xxl bd-gutter mt-5">
-        <div class="col-md-12 mx-auto text-center">
-            <p class="lead mb-5">
-                С помощью нашего почтового сервиса вы сможете создавать невероятные письма,
-                привлекающие ваших потенциальных клиентов.
-                <br><br>Также вам доступна отправка писем по расписанию, вы можете смотреть статусы и логи работы.
-                <br><br><b>Давайте начнем?</b>
-            </p>
-            <a class="btn btn-outline-primary btn-lg" href="{% url 'mail:mailing_list' %}">Создать рассылку</a>
+    <div class="container mt-5">
+        <h2 align="center">MailerLite - это удобный сервис почтовых рассылок</h2>
+        <div class="container-xxl bd-gutter mt-5">
+            <div class="col-md-12 mx-auto text-center">
+                <p class="lead mb-5">
+                    С помощью нашего почтового сервиса вы сможете создавать невероятные письма,
+                    привлекающие ваших потенциальных клиентов.
+                    <br><br>Также вам доступна отправка писем по расписанию, вы можете смотреть статусы и логи работы.
+                    <br><br><b>Давайте начнем?</b>
+                </p>
+                <a class="btn btn-outline-primary btn-lg" href="{% url 'mail:mailing_list' %}">Создать рассылку</a>
+            </div>
+            <br><br><br>
+            <p>
+                Всего рассылок на нашем сервисе: {{ total_mailings }}<br>
+                Количество активных рассылок: {{ active_mailings }}<br>
+                Количество уникальных клиентов для рассылок: {{ unique_clients }}<br>
+            </p><br>
+            <h4>Статьи нашего блога</h4>
+            <ul>
+                {% for blog in random_blogs %}
+                    <li>
+                        <a href="{% url 'blog:blog_view' blog.pk %}">{{ blog.title }}</a>
+                    </li> {% endfor %}
+            </ul>
         </div>
-    </div>
-</div>
+    </div><br>
 {% endblock %}

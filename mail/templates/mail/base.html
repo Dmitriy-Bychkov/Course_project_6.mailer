@@ -30,7 +30,8 @@
                 <li><a href="{% url 'mail:mailing_list' %}" class="nav-link px-2 text-white">Рассылки</a></li>
                 <li><a href="{% url 'mail:messages_list' %}" class="nav-link px-2 text-white">Сообщения</a></li>
                 <li><a href="{% url 'mail:clients_list' %}" class="nav-link px-2 text-white">Клиенты</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Логи</a></li>
+                <li><a href="{% url 'mail:log_list' %}" class="nav-link px-2 text-white">Логи рассылки</a></li>
+                <li><a href="{% url 'blog:blog_list' %}" class="nav-link px-2 text-white">Блог</a></li>
             </ul>
 
             <div class="text-end">
