@@ -1,12 +1,15 @@
 from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 import random
+
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
 from blog.models import Blog
-from mail.forms import MailingForm, ClientForm, MessageForm
+from mail.forms import MailingForm, ClientForm, MessageForm, MailingUpdateManagerForm
 from mail.models import Client, Message, Mailing, Log
+from users.models import User
 
 
 class IndexView(TemplateView):
@@ -190,6 +193,15 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         kwargs = super().get_form_kwargs()
         kwargs['owner'] = self.request.user
         return kwargs
+
+
+class MailingUpdateManagerView(LoginRequiredMixin, UpdateView):
+    """Контроллер для редактирования рассылки менеджером-модератором"""
+
+    template_name = 'mail/manager_mailing_form.html'
+    model = Mailing
+    form_class = MailingUpdateManagerForm
+    success_url = reverse_lazy('mail:mailing_list')
 
 
 class MailingDelete(LoginRequiredMixin, DeleteView):
