@@ -8,11 +8,11 @@ from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
-from django.views.generic import CreateView, UpdateView, TemplateView
+from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 from django.urls import reverse_lazy, reverse
 
 from mail.services import send_email
-from users.forms import UserRegisterForm, UserProfileForm, PasswordForm
+from users.forms import UserRegisterForm, UserProfileForm, PasswordForm, UserUpdateManagerForm
 from users.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth import login
@@ -93,6 +93,12 @@ class UserConfirmedView(TemplateView):
     title = "Your email is activated."
 
 
+class UserListView(LoginRequiredMixin, ListView):
+    """Контроллер для просмотра списка пользователей"""
+
+    model = User
+
+
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     """Профиль пользователя """
 
@@ -103,6 +109,14 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class UserUpdateManagerView(LoginRequiredMixin, UpdateView):
+    """Контроллер для редактирования пользователя менеджером-модератором"""
+
+    model = User
+    success_url = reverse_lazy("users:users_list")
+    form_class = UserUpdateManagerForm
 
 
 @login_required
