@@ -16,8 +16,9 @@ class UserProfileForm(StyleFormMixin, UserChangeForm):
         fields = ["email", "password", "first_name", "last_name", "phone", "country", "avatar"]
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        """Скрытие поля с паролем"""
 
+        super().__init__(*args, **kwargs)
         self.fields['password'].widget = forms.HiddenInput()
 
 
@@ -34,3 +35,17 @@ class PasswordForm(StyleFormMixin, forms.Form):
             raise forms.ValidationError('Пароли не совпадают')
 
         return cleaned_data
+
+
+class UserUpdateManagerForm(StyleFormMixin, UserChangeForm):
+    """Форма у пользователей для менеджеров-модераторов сервиса"""
+
+    class Meta:
+        model = User
+        fields = ["is_active"]
+
+    def __init__(self, *args, **kwargs):
+        """Скрытие поля с паролем"""
+
+        super().__init__(*args, **kwargs)
+        self.fields['password'].widget = forms.HiddenInput()
