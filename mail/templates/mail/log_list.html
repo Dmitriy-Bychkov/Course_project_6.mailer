@@ -4,28 +4,32 @@
         <div class="row mt-2">
             <div class="col m-2"><br>
                 <h2 align="center">Список логов рассылки</h2>
-                <br>
-                <br>
-                <table class="table">
-                    <thead>
-                    <tr class="table-active">
-                        <th>№</th>
-                        <th>Рассылка</th>
-                        <th>Время последней попытки</th>
-                        <th>Статус попытки</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for object in object_list %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ object.mailing }}</td>
-                            <td>{{ object.last_attempt }}</td>
-                            <td>{{ object.status }}</td>
+                {% if object_list %}
+                    <br>
+                    <br>
+                    <table class="table">
+                        <thead>
+                        <tr class="table-active">
+                            <th>№</th>
+                            <th>Рассылка</th>
+                            <th>Время последней попытки</th>
+                            <th>Статус попытки</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for object in object_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ object.mailing }}</td>
+                                <td>{{ object.last_attempt }}</td>
+                                <td>{{ object.status }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}<br>
+                    <p align="center">Еще не было запущено ни одной рассылки</p>
+                {% endif %}
             </div>
         </div>
     </div>
