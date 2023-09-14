@@ -1,0 +1,48 @@
+{% extends 'mail/base.html' %}
+{% block content %}
+    <div>
+        <div class="row mt-2">
+            <div class="col m-2"><br>
+                <h2 align="center">Список всех пользователей сервиса</h2>
+                <br>
+                {% if object_list %}
+                    <br>
+                    <table class="table">
+                        <thead>
+                        <tr class="table-active">
+                            <th>№</th>
+                            <th>Имя пользователя</th>
+                            <th>Email</th>
+                            <th>Телефон</th>
+                            <th>Страна</th>
+                            <th>Действия с пользователем</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for object in object_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ object.first_name }}</td>
+                                <td>{{ object.email }}</td>
+                                <td>{{ object.phone }}</td>
+                                <td>{{ object.country }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{% url 'users:edit_user' object.pk %}"
+                                           class="btn btn-sm btn-outline-danger">Деактивировать</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <br>
+                    <a align="center " href="{% url 'mail:mailing_list' %}"
+                       class="button">Назад к списку рассылок</a>
+                {% else %}<br>
+                    <p align="center">В сервисе еще никто не зарегистрирован!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
