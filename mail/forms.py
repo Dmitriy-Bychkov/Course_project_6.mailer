@@ -27,6 +27,14 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
         exclude = ('owner',)
 
 
+class MailingUpdateManagerForm(StyleFormMixin, forms.ModelForm):
+    """Форма у рассылки для менеджеров-модераторов сервиса"""
+
+    class Meta:
+        model = Mailing
+        fields = ["is_active"]
+
+
 class ClientForm(StyleFormMixin, forms.ModelForm):
     """Класс для генерации формы создания клиентов-получателей рассылки"""
 
