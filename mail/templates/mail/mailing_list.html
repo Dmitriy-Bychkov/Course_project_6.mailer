@@ -3,10 +3,11 @@
     <div>
         <div class="row mt-2">
             <div class="col m-2"><br>
-                <h2 align="center">Все ваши рассылки</h2>
-                <p align="center">Начните сооздавать вашу первую рассылку с создания нового привлекательного сообщения
-                    и добавления списка получателей</p><br>
                 {% if not perms.mail.can_manager_view %}
+                    <h2 align="center">Все ваши рассылки</h2>
+                    <p align="center">Начните сооздавать вашу первую рассылку с создания нового привлекательного
+                        сообщения
+                        и добавления списка получателей</p><br>
                     <div class="row mt-2">
                         <div class="col m-2">
                             <a class="btn btn-outline-primary" href="{% url 'mail:create_mailing' %}">Добавить
@@ -15,6 +16,15 @@
                                 сообщение</a>
                             <a class="btn btn-outline-primary" href="{% url 'mail:create_client' %}">Добавить
                                 клиента</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <h2 align="center">Рассылки всех пользователей</h2>
+                    <br>
+                    <div class="row mt-2">
+                        <div class="col m-2">
+                            <a class="btn btn-outline-primary" href="{% url 'users:users_list' %}">Список всех
+                                пользователей</a>
                         </div>
                     </div>
                 {% endif %}
@@ -51,21 +61,29 @@
                                     {% endfor %}
                                 </td>
                                 <td>
-                                    <div class="btn-group">
-                                        {% if object.get_status == 'started' and not perms.mail.can_manager_view %}
+                                    {% if not perms.mail.can_manager_view %}
+                                        <div class="btn-group">
+                                        {% if object.get_status == 'created' %}
                                             <a href="#"
                                                class="btn btn-sm btn-outline-warning">Отправить</a>
                                         {% endif %}
                                         <a href="{% url 'mail:view_mailing' object.pk %}"
                                            class="btn btn-sm btn-outline-secondary">Посмотреть</a>
-                                        {#                                        {% if object.owner == request.user %}#}
-                                        {% if not perms.mail.can_manager_view %}
-                                            <a href="{% url 'mail:edit_mailing' object.pk %}"
-                                               class="btn btn-sm btn-outline-primary">Редактировать</a>
-                                            <a href="{% url 'mail:delete_mailing' object.pk %}"
-                                               class="btn btn-sm btn-outline-danger">Удалить</a>
-                                        {% endif %}
+                                        <a href="{% url 'mail:edit_mailing' object.pk %}"
+                                           class="btn btn-sm btn-outline-primary">Редактировать</a>
+                                        <a href="{% url 'mail:delete_mailing' object.pk %}"
+                                           class="btn btn-sm btn-outline-danger">Удалить</a>
+                                    {% else %}
+                                        <div class="btn-group">
+                                        <a href="{% url 'mail:view_mailing' object.pk %}"
+                                           class="btn btn-sm btn-outline-secondary">Посмотреть</a>
+                                        <a href="{% url 'mail:manager_edit_mailing' object.pk %}"
+                                           class="btn btn-sm btn-outline-danger">Деактивировать</a>
+                                        <a href="{% url 'users:edit_user' object.pk %}"
+                                           class="btn btn-sm btn-outline-success">Пользователь</a>
+                                    {% endif %}
                                     </div>
+
                                 </td>
                             </tr>
                         {% endfor %}

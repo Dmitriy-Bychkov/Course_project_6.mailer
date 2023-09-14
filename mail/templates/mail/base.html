@@ -45,11 +45,21 @@
         </div>
     </div>
 </header>
-<div class="m-sm-3">
-    {% if user.is_authenticated %}
-        <h6 align="right">Вы вошли как: {{ user.email }}</h6>
-    {% endif %}
-</div>
+{% if not perms.mail.can_manager_view %}
+    <div class="m-sm-3">
+        {% if user.is_authenticated %}
+            <h6 align="right">Вы вошли как: {{ user.email }}</h6>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="m-sm-3">
+        <h6 align="right">
+            Вы вошли как: {{ user.email }}<br>
+            (с правами менеджера)
+        </h6>
+    </div>
+    <br>
+{% endif %}
 
 {% block content %}
 {% endblock %}

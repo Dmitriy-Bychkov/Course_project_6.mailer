@@ -3,15 +3,18 @@
     <div>
         <div class="row mt-2">
             <div class="col m-2"><br>
-                <h2 align="center">Список всех клиентов</h2>
-                <br>
                 {% if not perms.mail.can_manager_view %}
+                    <h2 align="center">Список ваших клиентов</h2>
+                    <br>
                     <div class="row mt-2">
                         <div class="col m-2">
                             <a class="btn btn-outline-primary" href="{% url 'mail:create_client' %}">Добавить нового
                                 клиента</a>
                         </div>
                     </div>
+                {% else %}
+                    <h2 align="center">Клиенты всех пользователей</h2>
+                    <br>
                 {% endif %}
                 {% if object_list %}
                     <br>
