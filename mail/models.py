@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
@@ -10,6 +11,10 @@ class Client(models.Model):
     client_name = models.CharField(max_length=30, verbose_name='имя')
     client_email = models.EmailField(unique=True, verbose_name='email')
     comment = models.TextField(verbose_name='комментарий', **NULLABLE)
+
+    # Зависимость от владельца клиента
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец клиента',
+                              **NULLABLE)
 
     def __str__(self):
         return f'{self.client_name}, {self.client_email}'
@@ -26,6 +31,10 @@ class Message(models.Model):
 
     message_subject = models.CharField(max_length=180, verbose_name='тема письма')
     message_text = models.TextField(verbose_name='cообщение')
+
+    # Зависимость от владельца сообщения
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец сообщения',
+                              **NULLABLE)
 
     def __str__(self):
         return f'{self.message_subject}, {self.message_text}'
@@ -61,6 +70,10 @@ class Mailing(models.Model):
     clients = models.ManyToManyField(Client, verbose_name='клиенты')
     is_active = models.BooleanField(default=True, verbose_name='статус активности')
 
+    # Зависимость от владельца рассылки
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец рассылки',
+                              **NULLABLE)
+
     def get_status(self):
         now = timezone.now()
         if self.start_time < now < self.completion_time:
@@ -78,6 +91,9 @@ class Mailing(models.Model):
 
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
+        permissions = [
+            ('can_manager_view', 'Разрешение для менеджера на просмотр рассылки'),
+        ]
 
 
 class Log(models.Model):
