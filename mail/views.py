@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 import random
 from django.urls import reverse_lazy, reverse
@@ -44,27 +45,40 @@ class IndexView(TemplateView):
         return context
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания нового клиента - получателя рассылки"""
 
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mail:clients_list')
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
 
-class ClientListView(ListView):
+        return super().form_valid(form)
+
+
+class ClientListView(LoginRequiredMixin, ListView):
     """Контроллер для просмотра списка клиентов"""
 
     model = Client
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('mail.can_manager_view'):
+            return queryset
+        return queryset.filter(owner=self.request.user)
 
-class ClientDetailView(DetailView):
+
+class ClientDetailView(LoginRequiredMixin, DetailView):
     """Контроллер для детального просмотра клиента"""
 
     model = Client
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер для редактирования клиента"""
 
     model = Client
@@ -72,34 +86,47 @@ class ClientUpdateView(UpdateView):
     success_url = reverse_lazy('mail:clients_list')
 
 
-class ClientDelete(DeleteView):
+class ClientDelete(LoginRequiredMixin, DeleteView):
     """Контроллер для удаления клиента"""
 
     model = Client
     success_url = reverse_lazy('mail:clients_list')
 
 
-class MessageCreateView(CreateView):
+class MessageCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания нового сообщения"""
 
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('mail:messages_list')
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
 
-class MessageListView(ListView):
+        return super().form_valid(form)
+
+
+class MessageListView(LoginRequiredMixin, ListView):
     """Контроллер для просмотра списка сообщений"""
 
     model = Message
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('mail.can_manager_view'):
+            return queryset
+        return queryset.filter(owner=self.request.user)
 
-class MessageDetailView(DetailView):
+
+class MessageDetailView(LoginRequiredMixin, DetailView):
     """Контроллер для детального просмотра сообщения"""
 
     model = Message
 
 
-class MessageUpdateView(UpdateView):
+class MessageUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер для редактирования сообщения"""
 
     model = Message
@@ -107,25 +134,43 @@ class MessageUpdateView(UpdateView):
     success_url = reverse_lazy('mail:messages_list')
 
 
-class MessageDelete(DeleteView):
+class MessageDelete(LoginRequiredMixin, DeleteView):
     """Контроллер для удаления сообщения"""
 
     model = Message
     success_url = reverse_lazy('mail:messages_list')
 
 
-class MailingCreateView(CreateView):
+class MailingCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания новой рассылки"""
 
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mail:mailing_list')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['owner'] = self.request.user
+        return kwargs
 
-class MailingListView(ListView):
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
+
+
+class MailingListView(LoginRequiredMixin, ListView):
     """Контроллер для просмотра списка рассылок"""
 
     model = Mailing
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('mail.can_manager_view'):
+            return queryset
+        return queryset.filter(owner=self.request.user)
 
 
 class MailingDetailView(DetailView):
@@ -134,22 +179,27 @@ class MailingDetailView(DetailView):
     model = Mailing
 
 
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер для редактирования рассылки"""
 
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mail:mailing_list')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['owner'] = self.request.user
+        return kwargs
 
-class MailingDelete(DeleteView):
+
+class MailingDelete(LoginRequiredMixin, DeleteView):
     """Контроллер для удаления рассылки"""
 
     model = Mailing
     success_url = reverse_lazy('mail:mailing_list')
 
 
-class LogListView(ListView):
+class LogListView(LoginRequiredMixin, ListView):
     """Контроллер для просмотра списка логов рассылок"""
 
     model = Log
