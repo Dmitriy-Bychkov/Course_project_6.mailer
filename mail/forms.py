@@ -16,9 +16,15 @@ class StyleFormMixin:
 class MailingForm(StyleFormMixin, forms.ModelForm):
     """Класс для генерации формы создания рассылки"""
 
+    def __init__(self, *args, **kwargs):
+        owner = kwargs.pop('owner', None)
+        super().__init__(*args, **kwargs)
+        self.fields['clients'].queryset = self.fields['clients'].queryset.filter(owner=owner)
+        self.fields['message'].queryset = self.fields['message'].queryset.filter(owner=owner)
+
     class Meta:
         model = Mailing
-        fields = "__all__"
+        exclude = ('owner',)
 
 
 class ClientForm(StyleFormMixin, forms.ModelForm):
@@ -26,7 +32,7 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Client
-        fields = "__all__"
+        exclude = ('owner',)
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
@@ -34,4 +40,4 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = "__all__"
+        exclude = ('owner',)
