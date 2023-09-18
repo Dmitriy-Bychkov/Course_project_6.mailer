@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'mail',
     'blog',
     'users',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,8 @@ if CACHE_ENABLED:
             "LOCATION": os.getenv('CACHE_LOCATION'),
         }
     }
+
+# Настройка демона Crontab на запуск функции рассылки сообщений с интервалом в 1 минуту
+CRONJOBS = [
+    ('*/1 * * * *', 'mail.services.send_mailing_task')
+]
