@@ -2,13 +2,14 @@ from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 import random
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
 from blog.models import Blog
 from mail.forms import MailingForm, ClientForm, MessageForm, MailingUpdateManagerForm
 from mail.models import Client, Message, Mailing, Log
+from mail.services import send_mail_task
 from users.models import User
 
 
@@ -176,6 +177,18 @@ class MailingListView(LoginRequiredMixin, ListView):
         return queryset.filter(owner=self.request.user)
 
 
+class MailingSendMessageView(LoginRequiredMixin, DetailView):
+    """Контроллер для старта рассылки"""
+
+    template_name = 'mail/mailing_send_message_successful.html'
+    model = Mailing
+
+    def get(self, *args, **kwargs):
+        mailing = self.get_object()
+        mailing.send()
+        return super().get(*args, **kwargs)
+
+
 class MailingDetailView(DetailView):
     """Контроллер для детального просмотра рассылки"""
 
@@ -198,7 +211,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
 class MailingUpdateManagerView(LoginRequiredMixin, UpdateView):
     """Контроллер для редактирования рассылки менеджером-модератором"""
 
-    template_name = 'mail/manager_mailing_form.html'
+    template_name = 'mail/mailing_manager_form.html'
     model = Mailing
     form_class = MailingUpdateManagerForm
     success_url = reverse_lazy('mail:mailing_list')
