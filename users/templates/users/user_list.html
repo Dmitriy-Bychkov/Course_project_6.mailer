@@ -28,8 +28,13 @@
                                 <td>{{ object.country }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{% url 'users:edit_user' object.pk %}"
-                                           class="btn btn-sm btn-outline-danger">Деактивировать</a>
+                                        {% if object.is_active %}
+                                            <a href="{% url 'users:edit_user' object.pk %}"
+                                               class="btn btn-sm btn-outline-danger">Деактивировать</a>
+                                        {% else %}
+                                            <a href="{% url 'users:edit_user' object.pk %}"
+                                               class="btn btn-sm btn-outline-success">Активировать</a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>
