@@ -14,15 +14,17 @@
                             <th>Рассылка</th>
                             <th>Время последней попытки</th>
                             <th>Статус попытки</th>
+                            <th>Сообщение</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for object in object_list %}
+                        {% for log in object_list %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ object.mailing }}</td>
-                                <td>{{ object.last_attempt }}</td>
-                                <td>{{ object.status }}</td>
+                                <td>{{ log.mailing }}</td>
+                                <td>{{ log.last_attempt }}</td>
+                                <td>{{ log.status }}</td>
+                                <td>{{ log.message }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
