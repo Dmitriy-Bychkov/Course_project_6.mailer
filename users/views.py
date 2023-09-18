@@ -11,7 +11,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 from django.urls import reverse_lazy, reverse
 
-from mail.services import send_email
+from mail.services import send_mail_task
 from users.forms import UserRegisterForm, UserProfileForm, PasswordForm, UserUpdateManagerForm
 from users.models import User
 from django.shortcuts import redirect, render
@@ -55,7 +55,7 @@ class RegisterView(CreateView):
 
         # передаем сервисной функции переменные для отправки email пользователю
         # со ссылкой для подтверждения почты
-        send_email(subject, message, recipient_list)
+        send_mail_task(subject, message, recipient_list)
 
         return redirect('users:email_confirmation_sent')
 
@@ -133,7 +133,7 @@ def set_new_password(request):
             recipient_list = [request.user.email]
 
             # передаем сервисной функции переменные для отправки email с новым паролем
-            send_email(subject, message, recipient_list)
+            send_mail_task(subject, message, recipient_list)
 
             request.user.set_password(new_password)
             request.user.save()
@@ -163,7 +163,7 @@ def password_reset(request):
             recipient_list = [user.email]
 
             # передаем сервисной функции переменные для отправки email с новым паролем
-            send_email(subject, message, recipient_list)
+            send_mail_task(subject, message, recipient_list)
 
             return redirect(reverse("users:login"))  # Перенаправление на страницу входа
 
