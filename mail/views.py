@@ -1,16 +1,12 @@
-from typing import Any
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
 from blog.models import Blog
 from mail.forms import MailingForm, ClientForm, MessageForm, MailingUpdateManagerForm
 from mail.models import Client, Message, Mailing, Log
-from mail.services import send_mail_task
-from users.models import User
 
 
 class IndexView(TemplateView):
@@ -228,3 +224,9 @@ class LogListView(LoginRequiredMixin, ListView):
     """Контроллер для просмотра списка логов рассылок"""
 
     model = Log
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('mail.can_manager_view'):
+            return queryset
+        return queryset.filter(mailing__owner=self.request.user)
