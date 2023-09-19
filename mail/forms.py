@@ -19,12 +19,20 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         owner = kwargs.pop('owner', None)
         super().__init__(*args, **kwargs)
+        # Добавляем поле с клиентами из модели клиентов и фильтруем только своих клиентов
         self.fields['clients'].queryset = self.fields['clients'].queryset.filter(owner=owner)
-        self.fields['message'].queryset = self.fields['message'].queryset.filter(owner=owner)
+        # Добавляем поле с сообщениями из модели сообщений и фильтруем только свои сообщения
+        self.fields['message'].queryset = Message.objects.filter(owner=owner)
+        # Предлагаем к показу выбора только тему сообщения
+        choices = [(message.id, message.message_subject) for message in self.fields['message'].queryset]
+        self.fields['message'].widget = forms.Select(
+            choices=[('', '--------')] + choices,  # Добавляем пустой элемент в список выбора
+            attrs={'class': 'form-control'}
+        )
 
     class Meta:
         model = Mailing
-        exclude = ('owner',)
+        exclude = ('owner', 'last_sent')
 
 
 class MailingUpdateManagerForm(StyleFormMixin, forms.ModelForm):
