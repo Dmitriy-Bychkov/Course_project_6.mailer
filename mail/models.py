@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from mail.services import send_mail_task
+
+from mail.email_sender import send_mail_task
 
 NULLABLE = {'null': True, 'blank': True}
 
@@ -70,7 +71,7 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, verbose_name='сообщение', on_delete=models.CASCADE)
     clients = models.ManyToManyField(Client, verbose_name='клиенты')
     is_active = models.BooleanField(default=True, verbose_name='статус активности')
-    last_sended = models.DateTimeField(verbose_name='последняя отправка')
+    last_sent = models.DateTimeField(verbose_name='последняя отправка', **NULLABLE)
 
     # Зависимость от владельца рассылки
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец рассылки',
@@ -95,14 +96,14 @@ class Mailing(models.Model):
         for m in cls.objects.all():
             # Ежедневные рассылки
             # frequency равно daily
-            # last_sended должен быть вчерашним днем
+            # last_sent должен быть вчерашним днем
             # статус должен быть либо created либо completed
             # время начала меньше или равно текущему времени
             # дата начала меньше или равно текущей дате
             # время и дата окончания больше или равно текущему времени
             # if m.frequency == 'daily':
-            #     # last_sended должен быть вчерашним днем
-            #     if m.last_sended.year == now.year and m.last_sended.month == now.month and m.last_sended.day == now.day - 1:
+            #     # last_sent должен быть вчерашним днем
+            #     if m.last_sent.year == now.year and m.last_sent.month == now.month and m.last_sent.day == now.day - 1:
             #         # статус должен быть либо created либо completed
             #         if m.status in ['created', 'completed']:
             #             # время начала меньше или равно текущему времени
@@ -116,9 +117,9 @@ class Mailing(models.Model):
                 # время и дата окончания больше или равно текущему времени
                 m.frequency == 'daily',
                 # last_sended должен быть вчерашним днем
-                m.last_sended.year == now.year,
-                m.last_sended.month == now.month,
-                m.last_sended.day == now.day - 1,
+                m.last_sent.year == now.year,
+                m.last_sent.month == now.month,
+                m.last_sent.day == now.day - 1,
                 # статус должен быть либо created либо completed
                 m.status in ['created', 'completed'],
                 # время и дата  начала меньше или равно текущему времени
@@ -172,6 +173,7 @@ class Mailing(models.Model):
             )
 
         self.status = "completed"
+        self.last_sent = timezone.now()
         self.save()
 
     def __str__(self):
