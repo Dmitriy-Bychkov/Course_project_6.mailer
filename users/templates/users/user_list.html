@@ -5,7 +5,7 @@
             <div class="col m-2"><br>
                 <h2 align="center">Список всех пользователей сервиса</h2>
                 <br>
-                {% if object_list %}
+                {% if user_list %}
                     <br>
                     <table class="table">
                         <thead>
@@ -19,20 +19,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for object in object_list %}
+                        {% for user in user_list %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ object.first_name }}</td>
-                                <td>{{ object.email }}</td>
-                                <td>{{ object.phone }}</td>
-                                <td>{{ object.country }}</td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.phone }}</td>
+                                <td>{{ user.country }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        {% if object.is_active %}
-                                            <a href="{% url 'users:edit_user' object.pk %}"
+                                        {% if user.is_active %}
+                                            <a href="{% url 'users:edit_user' user.pk %}"
                                                class="btn btn-sm btn-outline-danger">Деактивировать</a>
                                         {% else %}
-                                            <a href="{% url 'users:edit_user' object.pk %}"
+                                            <a href="{% url 'users:edit_user' user.pk %}"
                                                class="btn btn-sm btn-outline-success">Активировать</a>
                                         {% endif %}
                                     </div>

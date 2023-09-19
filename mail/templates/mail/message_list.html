@@ -16,7 +16,7 @@
                     <h2 align="center">Сообщения всех пользователей</h2>
                     <br>
                 {% endif %}
-                {% if object_list %}
+                {% if message_list %}
                     <br>
                     <table class="table">
                         <thead>
@@ -28,19 +28,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for object in object_list %}
+                        {% for message in message_list %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ object.message_subject }}</td>
-                                <td>{{ object.message_text|slice:":120" }}</td>
+                                <td>{{ message.message_subject }}</td>
+                                <td>{{ message.message_text|slice:":120" }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{% url 'mail:view_message' object.pk %}"
+                                        <a href="{% url 'mail:view_message' message.pk %}"
                                            class="btn btn-sm btn-outline-secondary">Посмотреть</a>
                                         {% if not perms.mail.can_manager_view %}
-                                            <a href="{% url 'mail:edit_message' object.pk %}"
+                                            <a href="{% url 'mail:edit_message' message.pk %}"
                                                class="btn btn-sm btn-outline-primary">Редактировать</a>
-                                            <a href="{% url 'mail:delete_message' object.pk %}"
+                                            <a href="{% url 'mail:delete_message' message.pk %}"
                                                class="btn btn-sm btn-outline-danger">Удалить</a>
                                         {% endif %}
                                     </div>
