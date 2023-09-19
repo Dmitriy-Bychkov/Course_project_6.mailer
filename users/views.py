@@ -11,7 +11,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 from django.urls import reverse_lazy, reverse
 
-from mail.services import send_mail_task
+from mail.email_sender import send_mail_task
 from users.forms import UserRegisterForm, UserProfileForm, PasswordForm, UserUpdateManagerForm
 from users.models import User
 from django.shortcuts import redirect, render
