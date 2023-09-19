@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
 
 from blog.models import Blog
-from mail.services import get_blog_cache
+from blog.services import get_blog_cache
 
 
 class BlogListView(ListView):
