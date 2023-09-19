@@ -84,7 +84,7 @@
                                             <a href="{% url 'mail:edit_mailing_manager' mailing.pk %}"
                                                class="btn btn-sm btn-outline-success">Активировать</a>
                                         {% endif %}
-                                        <a href="{% url 'users:edit_user' mailing.pk %}"
+                                        <a href="{% url 'users:edit_user' mailing.owner.pk %}"
                                            class="btn btn-sm btn-outline-primary">Пользователь</a>
                                     {% endif %}
                                     </div>
