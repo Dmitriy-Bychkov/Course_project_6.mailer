@@ -165,5 +165,5 @@ if CACHE_ENABLED:
 
 # Настройка демона Crontab на запуск функции рассылки сообщений с интервалом в 1 минуту
 CRONJOBS = [
-    ('*/1 * * * *', 'mail.services.send_mailing_task')
+    ('*/1 * * * *', 'users.management.commands.start_send_mail')
 ]
