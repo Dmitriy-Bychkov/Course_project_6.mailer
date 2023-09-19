@@ -21,7 +21,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         group_name = 'Managers'
         app_config = apps.get_app_config('mail')
-        model_name = 'mailing'  # Имя модели с рассылками (пример: 'mail')
+        model_name = 'mailing'  # Имя модели с рассылками
 
         # Удаляем группу, если она уже существует
         Group.objects.filter(name='Managers').delete()
@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
             permissions = [
                 'view_mailing',
-                'view_user',
+                'can_manager_view',  # Наше собственное разрешение, созданное в классе Meta модели Mailing
             ]
 
             for permission_codename in permissions:
