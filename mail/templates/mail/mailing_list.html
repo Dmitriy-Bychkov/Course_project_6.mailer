@@ -55,11 +55,11 @@
                                 <td>{{ mailing.completion_time }}</td>
                                 <td>{{ mailing.frequency }}</td>
                                 {% if mailing.get_status == 'created' %}
-                                    <td class="text-success">{{ mailing.get_status }}</td>
-                                {% elif mailing.get_status == 'completed' %}
-                                    <td class="text-danger">{{ mailing.get_status }}</td>
+                                    <td class="text-black-50">{{ mailing.get_status }}</td>
                                 {% elif mailing.get_status == 'started' %}
                                     <td class="text-primary">{{ mailing.get_status }}</td>
+                                {% elif mailing.get_status == 'completed' %}
+                                    <td class="text-success">{{ mailing.get_status }}</td>
                                 {% endif %}
                                 <td>
                                     {% for client in mailing.clients.all %}
