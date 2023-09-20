@@ -7,7 +7,7 @@
                 <br><br>
                 <table class="table table-reflow">
                     <thead>
-                    <tr class="table-active">
+                    <tr class="table-success">
                         <th>№</th>
                         <th>Дата публикации</th>
                         <th>Просмотры</th>
@@ -16,15 +16,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for object in object_list %}
+                    {% for blog in blog_list %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ object.creation_date }}</td>
-                            <td>{{ object.views_count }}</td>
-                            <td>{{ object.title }}</td>
+                            <td>{{ blog.creation_date }}</td>
+                            <td>{{ blog.views_count }}</td>
+                            <td>{{ blog.title }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{% url 'blog:blog_view' object.pk %}"
+                                    <a href="{% url 'blog:blog_view' blog.pk %}"
                                        class="btn btn-sm btn-outline-secondary">Прочитать статью</a>
                                 </div>
                             </td>

@@ -6,4 +6,5 @@ from blog.models import Blog
 class BlogAdmin(admin.ModelAdmin):
     """Представление раздела - блог в админке"""
 
-    list_display = ('title',)
+    list_display = ('title', 'creation_date')
+    search_fields = ('title', 'description',)
