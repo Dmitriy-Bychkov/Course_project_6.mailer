@@ -32,7 +32,7 @@
                     <br>
                     <table class="table table-reflow">
                         <thead>
-                        <tr class="table-active">
+                        <tr class="table-success">
                             <th>№</th>
                             <th>Сообщение</th>
                             <th>Начало</th>
@@ -54,7 +54,13 @@
                                 <td>{{ mailing.start_time }}</td>
                                 <td>{{ mailing.completion_time }}</td>
                                 <td>{{ mailing.frequency }}</td>
-                                <td>{{ mailing.get_status }}</td>
+                                {% if mailing.get_status == 'created' %}
+                                    <td class="text-success">{{ mailing.get_status }}</td>
+                                {% elif mailing.get_status == 'completed' %}
+                                    <td class="text-danger">{{ mailing.get_status }}</td>
+                                {% elif mailing.get_status == 'started' %}
+                                    <td class="text-primary">{{ mailing.get_status }}</td>
+                                {% endif %}
                                 <td>
                                     {% for client in mailing.clients.all %}
                                         {{ client.client_email }}<br>
@@ -65,7 +71,7 @@
                                         <div class="btn-group">
                                         {% if mailing.get_status == 'created' %}
                                             <a href="{% url 'mail:send_mailing' mailing.pk %}"
-                                               class="btn btn-sm btn-outline-warning">Отправить</a>
+                                               class="btn btn-sm btn-outline-success">Отправить</a>
                                         {% endif %}
                                         <a href="{% url 'mail:view_mailing' mailing.pk %}"
                                            class="btn btn-sm btn-outline-secondary">Посмотреть</a>

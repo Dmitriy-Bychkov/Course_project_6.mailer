@@ -9,7 +9,7 @@
                     <br>
                     <table class="table">
                         <thead>
-                        <tr class="table-active">
+                        <tr class="table-success">
                             <th>№</th>
                             <th>Рассылка</th>
                             <th>Время старта</th>
@@ -27,7 +27,11 @@
                                 <td>{{ log.mailing.start_time }}</td>
                                 <td>{{ log.last_attempt }}</td>
                                 <td>{{ log.mailing.frequency }}</td>
-                                <td>{{ log.status }}</td>
+                                {% if log.status == 'success' %}
+                                    <td class="text-success">{{ log.status }}</td>
+                                {% elif log.status == 'failed' %}
+                                    <td class="text-danger">{{ log.status }}</td>
+                                {% endif %}
                                 <td>{{ log.message }}</td>
                             </tr>
                         {% endfor %}
