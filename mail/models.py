@@ -1,3 +1,4 @@
+import datetime
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -78,12 +79,8 @@ class Mailing(models.Model):
                               **NULLABLE)
 
     def get_status(self):
-        # now = timezone.now()
-        # if self.start_time < now < self.completion_time:
-        #     self.status = "started"
-        # elif now > self.completion_time:
-        #     self.status = "completed"
-        # self.save()
+        """ Метод для получения статуса рассылки """
+
         return self.status
 
     @classmethod
@@ -94,48 +91,60 @@ class Mailing(models.Model):
         objects_list = []
 
         for m in cls.objects.all():
-            # Ежедневные рассылки
-            # frequency равно daily
-            # last_sent должен быть вчерашним днем
-            # статус должен быть либо created либо completed
-            # время начала меньше или равно текущему времени
-            # дата начала меньше или равно текущей дате
-            # время и дата окончания больше или равно текущему времени
-            # if m.frequency == 'daily':
-            #     # last_sent должен быть вчерашним днем
-            #     if m.last_sent.year == now.year and m.last_sent.month == now.month and m.last_sent.day == now.day - 1:
-            #         # статус должен быть либо created либо completed
-            #         if m.status in ['created', 'completed']:
-            #             # время начала меньше или равно текущему времени
-            #             if m.start_time.time() < now.time():
-            #                 # время и дата  начала меньше или равно текущему времени
-            #                 if m.start_time < now:
-            #                     # время и дата окончания больше или равно текущему времени
-            #                     if now < m.completion_time:
-            #                         objects_list.append(m)
+            # Условие, если нет даты последней отправки,
+            # или с даты последней отправки прошло больше одного дня, больше 7 дней, больше 30 дней
+            is_daily_valid = not m.last_sent or m.last_sent <= now - datetime.timedelta(days=1)
+            is_weekly_valid = not m.last_sent or m.last_sent <= now - datetime.timedelta(days=7)
+            is_monthly_valid = not m.last_sent or m.last_sent <= now - datetime.timedelta(days=30)
+
             if all([
                 # время и дата окончания больше или равно текущему времени
                 m.frequency == 'daily',
                 # last_sended должен быть вчерашним днем
-                m.last_sent.year == now.year,
-                m.last_sent.month == now.month,
-                m.last_sent.day == now.day - 1,
+                is_daily_valid,
                 # статус должен быть либо created либо completed
                 m.status in ['created', 'completed'],
-                # время и дата  начала меньше или равно текущему времени
+                # время начала меньше или равно текущему времени
                 m.start_time.time() < now.time(),
-                # время и дата окончания больше или равно текущему времени
+                # время и дата  начала меньше или равно текущему времени
                 m.start_time < now,
                 # время и дата окончания больше или равно текущему времени
                 now < m.completion_time
             ]):
                 objects_list.append(m)
 
-        # queryset = cls.objects.filter(
-        #     status="created",  # только предназначенные для отправки
-        #     start_time__lte=now, # время начала меньше или равно текущему времени
-        #     completion_time__gte=now # время окончания больше или равно текущему времени
-        # )
+            elif all([
+                # время и дата окончания больше или равно текущему времени
+                m.frequency == 'weekly',
+                # last_sended должен быть меньше на 7 дней, чем текущая дата
+                is_weekly_valid,
+                # статус должен быть либо created либо completed
+                m.status in ['created', 'completed'],
+                # время начала меньше или равно текущему времени
+                m.start_time.time() < now.time(),
+                # время и дата  начала меньше или равно текущему времени
+                m.start_time < now,
+                # время и дата окончания больше или равно текущему времени
+                now < m.completion_time
+            ]):
+                objects_list.append(m)
+
+            elif all([
+                # время и дата окончания больше или равно текущему времени
+                m.frequency == 'monthly',
+                # last_sended должен быть меньше на 30 дней, чем текущая дата
+                is_monthly_valid,
+                # статус должен быть либо created либо completed
+                m.status in ['created', 'completed'],
+                # время начала меньше или равно текущему времени
+                m.start_time.time() < now.time(),
+                # время и дата  начала меньше или равно текущему времени
+                m.start_time < now,
+                # время и дата окончания больше или равно текущему времени
+                now < m.completion_time
+            ]):
+                objects_list.append(m)
+
         return objects_list
 
     def send(self):
@@ -172,7 +181,8 @@ class Mailing(models.Model):
                 message=f"Количество отправленных сообщений: {count}"
             )
 
-        self.status = "completed"
+        # Меняем текущий статус на completed и сохраняем текущее время отправки в last_sent
+        self.status = 'completed'
         self.last_sent = timezone.now()
         self.save()
 
