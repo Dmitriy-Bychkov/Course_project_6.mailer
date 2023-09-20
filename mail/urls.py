@@ -10,7 +10,7 @@ from mail.views import ClientListView, MessageCreateView, MessageListView, Messa
 app_name = MailConfig.name
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
+    path('', cache_page(60)(IndexView.as_view()), name='index'),
 
     path('clients/create_client/', ClientCreateView.as_view(), name='create_client'),
     path('clients/clients_list/', ClientListView.as_view(), name='clients_list'),
