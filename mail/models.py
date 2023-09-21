@@ -178,7 +178,8 @@ class Mailing(models.Model):
                 mailing=self,
                 last_attempt=timezone.now(),
                 status="success",
-                message=f"Количество отправленных сообщений: {count}"
+                message=f"Количество отправленных сообщений: {count}\n"
+                        f"Количество получателей рассылки: {len(recipient_list)}"
             )
 
         # Меняем текущий статус на completed и сохраняем текущее время отправки в last_sent
