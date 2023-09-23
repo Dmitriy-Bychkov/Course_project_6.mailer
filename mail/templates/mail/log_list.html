@@ -32,7 +32,7 @@
                                 {% elif log.status == 'failed' %}
                                     <td class="text-danger">{{ log.status }}</td>
                                 {% endif %}
-                                <td>{{ log.message }}</td>
+                                <td>{{ log.message|safe }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
