@@ -178,8 +178,8 @@ class Mailing(models.Model):
                 mailing=self,
                 last_attempt=timezone.now(),
                 status="success",
-                message=f"Количество отправленных сообщений: {count}\n"
-                        f"Количество получателей рассылки: {len(recipient_list)}"
+                message=f"Сообщений отправлено: {count}<br>"
+                        f"Получателей рассылки: {len(recipient_list)}"
             )
 
         # Меняем текущий статус на completed и сохраняем текущее время отправки в last_sent
@@ -210,7 +210,7 @@ class Log(models.Model):
     mailing = models.ForeignKey(Mailing, verbose_name='рассылка', on_delete=models.CASCADE)
     last_attempt = models.DateTimeField(verbose_name='время последней попытки')
     status = models.CharField(max_length=7, choices=STATUS_CHOICE, verbose_name='статус попытки')
-    message = models.CharField(**NULLABLE, verbose_name='сообщение')
+    message = models.CharField(max_length=200, verbose_name='сообщение', **NULLABLE)
 
     def __str__(self):
         return f'{self.mailing} ({self.last_attempt}) - {self.status}'
